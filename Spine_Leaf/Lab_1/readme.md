@@ -1,4 +1,4 @@
-- Deploy the lab with topology file 'spine_leaf.clab.yml'
+- Deploy the lab with topology file 'spine_leaf.clab.yml':
 ```
 ~/clab-arista$ clab deploy -t spine_leaf.clab.yml
 22:30:47 INFO Containerlab started version=0.71.0
@@ -52,7 +52,7 @@ Run 'sudo clab version upgrade' or see https://containerlab.dev/install/ for ins
 │         │ ceos:4.35.0F │         │ 3fff:172:20:20::3 │
 ╰─────────┴──────────────┴─────────┴───────────────────╯
 ```
-- Inspect the topology 'spine_leaf.clab.yml' after deployment 
+- Inspect the topology 'spine_leaf.clab.yml' after deployment:
 ```
 ~/clab-arista$ clab inspect -t spine_leaf.clab.yml
 22:35:24 INFO Parsing & checking topology file=spine_leaf.clab.yml
@@ -77,4 +77,72 @@ Run 'sudo clab version upgrade' or see https://containerlab.dev/install/ for ins
 │ spine_2 │ ceos         │ running │ 172.20.20.3       │
 │         │ ceos:4.35.0F │         │ 3fff:172:20:20::3 │
 ╰─────────┴──────────────┴─────────┴───────────────────╯
+```
+- SSH access to a device using node name (username/password is `admin/admin`):
+```
+~/clab-arista$ ssh admin@spine_1
+Warning: Permanently added 'spine_1' (ED25519) to the list of known hosts.
+(admin@spine_1) Password:
+spine_1>
+spine_1>en
+spine_1#
+spine_1#
+spine_1#show run
+! Command: show running-config
+! device: spine-1 (cEOSLab, EOS-4.35.0F-44178984.4350F (engineering build))
+!
+no aaa root
+!
+username admin privilege 15 role network-admin secret sha512 $6$u96wqhebo3oaICHs$zWFoEcb4IbkHR2tgb5U3b9JpghxtNdErJEZzSqbcoB42OPYVPsa0g7KjgPcOWZpkd/K1cUyXbyHI6roEy5Wtt1
+!
+management api http-commands
+   no shutdown
+!
+no service interface inactive port-id allocation disabled
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+!
+hostname spine_1
+!
+spanning-tree mode mstp
+!
+system l1
+   unsupported speed action error
+   unsupported error-correction action error
+!
+management api gnmi
+   transport grpc default
+!
+management api netconf
+   transport ssh default
+!
+interface Ethernet1
+!
+interface Ethernet2
+!
+interface Ethernet3
+!
+interface Ethernet4
+!
+interface Management0
+   ip address 172.20.20.4/24
+   ipv6 address 3fff:172:20:20::4/64
+!
+no ip routing
+!
+ip route 0.0.0.0/0 172.20.20.1
+!
+ipv6 route ::/0 3fff:172:20:20::1
+!
+router multicast
+   ipv4
+      software-forwarding kernel
+   !
+   ipv6
+      software-forwarding kernel
+!
+end
+spine_1#
 ```
