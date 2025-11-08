@@ -78,7 +78,7 @@ Run 'sudo clab version upgrade' or see https://containerlab.dev/install/ for ins
 │         │ ceos:4.35.0F │         │ 3fff:172:20:20::3 │
 ╰─────────┴──────────────┴─────────┴───────────────────╯
 ```
-- SSH access to a device using node name (username/password is `admin/admin`):
+- SSH access to a device using node name and username/password is `admin/admin`
 ```
 ~/clab-arista$ ssh admin@spine_1
 Warning: Permanently added 'spine_1' (ED25519) to the list of known hosts.
@@ -86,7 +86,9 @@ Warning: Permanently added 'spine_1' (ED25519) to the list of known hosts.
 spine_1>
 spine_1>en
 spine_1#
-spine_1#
+```
+- Run commands such as `show run`, `show int status` and `show lldp neighbors` to verify the connectivities.
+```
 spine_1#show run
 ! Command: show running-config
 ! device: spine-1 (cEOSLab, EOS-4.35.0F-44178984.4350F (engineering build))
@@ -144,5 +146,32 @@ router multicast
       software-forwarding kernel
 !
 end
+pine_1#show int status
+Port       Name   Status       Vlan     Duplex Speed  Type            Flags Encapsulation
+Et1               connected    1        full   1G     EbraTestPhyPort
+Et2               connected    1        full   1G     EbraTestPhyPort
+Et3               connected    1        full   1G     EbraTestPhyPort
+Et4               connected    1        full   1G     EbraTestPhyPort
+Ma0               connected    routed   a-full a-1G   10/100/1000
+
+spine_1#show lldp ne
+Last table change time   : 0:04:04 ago
+Number of table inserts  : 9
+Number of table deletes  : 0
+Number of table drops    : 0
+Number of table age-outs : 0
+
+Port Neighbor Device ID Neighbor Port ID TTL
+---- ------------------ ---------------- ---
+Et1  leaf_1             Ethernet1        120
+Et2  leaf_2             Ethernet1        120
+Et3  leaf_3             Ethernet1        120
+Et4  leaf_4             Ethernet1        120
+Ma0  leaf_4             Management0      120
+Ma0  leaf_1             Management0      120
+Ma0  spine_2            Management0      120
+Ma0  leaf_2             Management0      120
+Ma0  leaf_3             Management0      120
+
 spine_1#
 ```
