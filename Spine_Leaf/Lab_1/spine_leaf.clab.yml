@@ -1,0 +1,28 @@
+name: spine_leaf
+prefix: ""
+topology:
+  kinds:
+    ceos:
+      image: ceos:4.35.0F
+  nodes:
+    spine_1:
+      kind: ceos
+    spine_2:
+      kind: ceos
+    leaf_1:
+      kind: ceos
+    leaf_2:
+      kind: ceos
+    leaf_3:
+      kind: ceos
+    leaf_4:
+      kind: ceos
+  links:
+    - endpoints: ["spine_1:eth1", "leaf_1:eth1"]
+    - endpoints: ["spine_1:eth2", "leaf_2:eth1"]
+    - endpoints: ["spine_1:eth3", "leaf_3:eth1"]
+    - endpoints: ["spine_1:eth4", "leaf_4:eth1"]
+    - endpoints: ["spine_2:eth1", "leaf_1:eth2"]
+    - endpoints: ["spine_2:eth2", "leaf_2:eth2"]
+    - endpoints: ["spine_2:eth3", "leaf_3:eth2"]
+    - endpoints: ["spine_2:eth4", "leaf_4:eth2"]
